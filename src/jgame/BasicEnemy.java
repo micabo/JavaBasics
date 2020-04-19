@@ -9,10 +9,13 @@ public class BasicEnemy extends GameObject {
 	static final int WIDTH = 16;
 	static final int HEIGHT = 16;
 	
+	private Handler handler;
+	
 	static Random r = new Random();
 	
-	public BasicEnemy(int x, int y) {
+	public BasicEnemy(int x, int y, Handler handler) {
 		super(x, y, ID.BasicEnemy);
+		this.handler = handler;
 		
 		velX = r.nextInt(10) - 5;
 		velY = r.nextInt(10) - 5;
@@ -25,6 +28,8 @@ public class BasicEnemy extends GameObject {
 
 	@Override
 	public void tick() {
+		handler.addObject(new Trail(x, y, Color.red, handler));
+		
 		x += velX;
 		y += velY;
 		
