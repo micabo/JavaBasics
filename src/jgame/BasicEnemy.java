@@ -1,7 +1,8 @@
-package com.tutorial.main;
+package jgame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Random;
 
 public class BasicEnemy extends GameObject {
@@ -10,11 +11,16 @@ public class BasicEnemy extends GameObject {
 	
 	static Random r = new Random();
 	
-	public BasicEnemy(int x, int y, ID id) {
-		super(x, y, id);
+	public BasicEnemy(int x, int y) {
+		super(x, y, ID.BasicEnemy);
 		
 		velX = r.nextInt(10) - 5;
 		velY = r.nextInt(10) - 5;
+	}
+	
+	@Override
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, WIDTH, HEIGHT);
 	}
 
 	@Override

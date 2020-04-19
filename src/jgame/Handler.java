@@ -1,4 +1,4 @@
-package com.tutorial.main;
+package jgame;
 
 import java.awt.Graphics;
 import java.util.LinkedList;

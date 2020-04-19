@@ -1,4 +1,4 @@
-package com.tutorial.main;
+package jgame;
 
 import java.awt.Canvas;
 import java.awt.Color;
@@ -23,10 +23,10 @@ public class Game extends Canvas implements Runnable {
 	
 	public Game() {
 		handler = new Handler();
-		handler.addObject(new Player(100, 100, ID.Player));
+		handler.addObject(new Player(100, 100, handler));
 		
 		for (int i = 0; i < 20; i++)
-			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.BasicEnemy));
+			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT)));
 		
 		hud = new HUD();
 		
