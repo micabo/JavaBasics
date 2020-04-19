@@ -33,8 +33,8 @@ public class BasicEnemy extends GameObject {
 		x += velX;
 		y += velY;
 		
-		if (x <= 0 || x >= Game.WIDTH - BasicEnemy.WIDTH - 16) velX *= -1;
-		if (y <= 0 || y >= Game.HEIGHT - BasicEnemy.HEIGHT - 38) velY *= -1;
+		if (x <= 0 || x >= Game.WIDTH - BasicEnemy.WIDTH) velX *= -1;
+		if (y <= 0 || y >= Game.HEIGHT - BasicEnemy.HEIGHT) velY *= -1;
 	}
 
 	@Override

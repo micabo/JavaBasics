@@ -26,9 +26,8 @@ public class Player extends GameObject {
 		x += velX;
 		y += velY;
 		
-		// magic padding comes from frame
-		x = Game.clamp(x, 0, Game.WIDTH - Player.WIDTH - 16);
-		y = Game.clamp(y, 0, Game.HEIGHT - Player.HEIGHT - 	38);
+		x = Game.clamp(x, 0, Game.WIDTH - Player.WIDTH);
+		y = Game.clamp(y, 0, Game.HEIGHT - Player.HEIGHT);
 		
 		collision();
 	}

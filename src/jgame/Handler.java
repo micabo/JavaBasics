@@ -11,15 +11,10 @@ public class Handler {
 			GameObject go = object.get(i);
 			go.tick();
 		}
-		/*
-		for (GameObject go : object) {
-			go.tick();
-		}
-		*/
 	}
 	
 	public void render(Graphics g) {
-		for (GameObject go : object) {
+		for (var go : object) {
 			go.render(g);
 		}
 	}

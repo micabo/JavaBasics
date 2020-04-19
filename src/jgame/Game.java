@@ -31,8 +31,6 @@ public class Game extends Canvas implements Runnable {
 		hud = new HUD();
 		
 		this.addKeyListener(new KeyInput(handler));
-		
-		new Window(WIDTH, HEIGHT, "Let's build a Game", this);
 	}
 	
 	public synchronized void start() {
@@ -53,6 +51,7 @@ public class Game extends Canvas implements Runnable {
 	
 	public void run() {
 		this.requestFocus();
+		
 		// game loop
 		long lastTime = System.nanoTime();
 		double amountOfTicks = 60.0;
@@ -110,13 +109,9 @@ public class Game extends Canvas implements Runnable {
 		bs.show();
 	}
 	
-	public static int clamp(int var, int min, int max) {
-		if (var >= max) return max;
-		if (var <= min) return min;
-		return var;
-	}
-	
-	public static void main(String[] args) {
-		new Game();
+	public static int clamp(int value, int min, int max) {
+		if (value >= max) return max;
+		if (value <= min) return min;
+		return value;
 	}
 }
