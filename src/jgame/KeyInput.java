@@ -3,9 +3,19 @@ package jgame;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+enum Direction {
+	UP(),
+	DOWN(),
+	LEFT(),
+	RIGHT(),
+	HORIZONTAL_ZERO,
+	VERTICAL_ZERO;
+}
+
 public class KeyInput extends KeyAdapter {
 	
 	private Handler handler;
+	private boolean[] keyDown = {false, false, false, false};
 	
 	public KeyInput(Handler handler) {
 		this.handler = handler;
@@ -16,29 +26,34 @@ public class KeyInput extends KeyAdapter {
 		if (key == KeyEvent.VK_ESCAPE) System.exit(0);
 		// System.out.println(key);
 		
-		for (var gameObject : handler.object) {
-			if (gameObject.id == ID.Player) {
-				// all actions of "Player"
-				if (key == KeyEvent.VK_W) {
-					gameObject.velY = -5;
-					break;
-				}
-				if (key == KeyEvent.VK_S) {
-					gameObject.velY = 5;
-					break;
-				}
-				if (key == KeyEvent.VK_A) {
-					gameObject.velX = -5;
-					break;
-				}
-				if (key == KeyEvent.VK_D) {
-					gameObject.velX = 5;
-					break;
-				}
-			}
+		Player player = (Player) handler.object.getFirst();
+		if (key == KeyEvent.VK_W) {
+			player.move(Direction.UP);
+			keyDown[0] = true;
 		}
-		
+		if (key == KeyEvent.VK_S) {
+			player.move(Direction.DOWN);
+			keyDown[1] = true;
+		}
+		if (key == KeyEvent.VK_A) {
+			player.move(Direction.LEFT);
+			keyDown[2] = true;
+		}
+		if (key == KeyEvent.VK_D) {
+			player.move(Direction.RIGHT);
+			keyDown[3] = true;
+		}
 	}
 	
-	public void keyReleased(KeyEvent e) {}
+	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_W) keyDown[0] = false;
+		if (key == KeyEvent.VK_S) keyDown[1] = false;
+		if (key == KeyEvent.VK_A) keyDown[2] = false;
+		if (key == KeyEvent.VK_D) keyDown[3] = false;
+		
+		Player player = (Player) handler.object.getFirst();
+		if (!keyDown[0] && !keyDown[1]) player.move(Direction.VERTICAL_ZERO);
+		if (!keyDown[2] && !keyDown[3]) player.move(Direction.HORIZONTAL_ZERO);
+	}
 }

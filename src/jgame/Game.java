@@ -22,14 +22,11 @@ public class Game extends Canvas implements Runnable {
 	private HUD hud;
 	
 	public Game() {
-		handler = new Handler();
+		handler = Handler.getInstance();
 		handler.addObject(new Player(100, 100, handler));
+		handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), handler));
 		
-		for (int i = 0; i < 3; i++)
-			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), handler));
-		
-		hud = new HUD();
-		
+		hud = new HUD(handler);
 		this.addKeyListener(new KeyInput(handler));
 	}
 	
@@ -70,8 +67,7 @@ public class Game extends Canvas implements Runnable {
 				delta--;
 			}
 			
-			if (running) // is this needed?!
-				render();
+			if (running) render(); // is this needed?
 			
 			frames++;
 			

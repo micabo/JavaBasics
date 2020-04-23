@@ -3,10 +3,15 @@ package jgame;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+enum ID {
+	Player(),
+	Enemy(),
+	Trail();
+}
+
 public abstract class GameObject {
 	protected int x, y;
-	protected int velX, velY;
-	
+	protected int vx, vy;
 	protected ID id;
 	
 	public GameObject(int x, int y, ID id) {

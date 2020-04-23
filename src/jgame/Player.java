@@ -8,12 +8,15 @@ import java.awt.Rectangle;
 public class Player extends GameObject {
 	static final int WIDTH = 32;
 	static final int HEIGHT = 32;
+	private static final int MAXVEL = 8;
 	
 	Handler handler;
+	private int health;
 	
 	public Player(int x, int y, Handler handler) {
 		super(x, y, ID.Player);
 		this.handler = handler;
+		health = 100;
 	}
 	
 	@Override
@@ -23,22 +26,25 @@ public class Player extends GameObject {
 	
 	@Override
 	public void tick() {
-		x += velX;
-		y += velY;
+		x += vx;
+		y += vy;
 		
 		x = Game.clamp(x, 0, Game.WIDTH - Player.WIDTH);
 		y = Game.clamp(y, 0, Game.HEIGHT - Player.HEIGHT);
+		
+		// reset velocity when hitting a wall
+		if (x == 0 || x == Game.WIDTH - Player.WIDTH) vx = 0;
+		if (y == 0 || y == Game.HEIGHT - Player.HEIGHT) vy = 0;
 		
 		collision();
 	}
 	
 	private void collision() {
 		Rectangle playerBounds = getBounds();
-		for (var gameObject : handler.object) {
-			if (gameObject.id == ID.BasicEnemy) {
-				if (playerBounds.intersects(gameObject.getBounds())) {
-					HUD.HEALTH--;
-				}
+		for (GameObject gameObject : handler.object) {
+			if (gameObject.id == ID.Enemy &&
+					playerBounds.intersects(gameObject.getBounds())) {
+				health = health > 0 ? health - 1 : 0;
 			}
 		}
 	}
@@ -52,5 +58,33 @@ public class Player extends GameObject {
 		
 		//g.setColor(Color.white);		
 		//g.fillRect(x, y, Player.WIDTH, Player.HEIGHT);
+	}
+	
+	public void move(Direction d) {
+		// not very responsive...
+		switch (d) {
+		case UP:
+			vy = -MAXVEL;
+			break;
+		case DOWN:
+			vy = MAXVEL;
+			break;
+		case VERTICAL_ZERO:
+			vy = 0;
+			break;
+		case LEFT:
+			vx = -MAXVEL;
+			break;
+		case RIGHT:
+			vx = MAXVEL;
+			break;
+		case HORIZONTAL_ZERO:
+			vx = 0;
+			break;
+		}
+	}
+	
+	public int getHealth() {
+		return health;
 	}
 }
