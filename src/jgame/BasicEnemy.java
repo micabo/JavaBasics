@@ -9,7 +9,7 @@ public class BasicEnemy extends GameObject {
 	static final int WIDTH = 16;
 	static final int HEIGHT = 16;
 	
-	static Random R = new Random();
+	static final Random R = new Random();
 	
 	private Handler handler;
 	private Color color;
@@ -25,7 +25,7 @@ public class BasicEnemy extends GameObject {
 			vy = R.nextInt(10) - 5;
 		} while(vy == 0);
 		
-		double velocity = Math.sqrt((double) vx * vx + vy * vy);
+		double velocity = getVelocity();
 		double maxVelocity = Math.sqrt(50);
 		double hue = velocity / maxVelocity;
 		color = new Color((int) (hue * 255), (int) ((1 - hue) * 255), 0);
@@ -39,19 +39,47 @@ public class BasicEnemy extends GameObject {
 	@Override
 	public void tick() {
 		handler.addObject(new Trail(x, y, color, handler));
+		updatePosition();
+	}
+	
+	private void updatePosition() {
+		int x_new = x + vx;
 		
-		// SR -> interpolation would be a good idea
+		if (x_new <= 0) {
+			vx *= -1;
+			x = 0 - x_new;
+		}
+		else if (x_new >= Game.WIDTH - BasicEnemy.WIDTH) {
+			vx *= -1;
+			x = 2 * (Game.WIDTH - BasicEnemy.WIDTH) - x_new;
+			
+		}
+		else {
+			x = x_new;
+		}
 		
-		x += vx;
-		y += vy;
+		int y_new = y + vy;
 		
-		if (x <= 0 || x >= Game.WIDTH - BasicEnemy.WIDTH) vx *= -1;
-		if (y <= 0 || y >= Game.HEIGHT - BasicEnemy.HEIGHT) vy *= -1;
+		if (y_new <= 0) {
+			vy *= -1;
+			y = 0 - y_new;
+		}
+		else if (y_new >= Game.HEIGHT - BasicEnemy.HEIGHT) {
+			vy *= -1;
+			y = 2 * (Game.HEIGHT - BasicEnemy.HEIGHT) - y_new;
+		}
+		else {
+			y = y_new;
+		}
 	}
 
 	@Override
 	public void render(Graphics g) {
 		g.setColor(color);
 		g.fillRect(x, y, BasicEnemy.WIDTH, BasicEnemy.HEIGHT);
+	}
+	
+	public double getVelocity() {
+		return Math.sqrt((double) vx * vx + vy * vy);
 	}
 }

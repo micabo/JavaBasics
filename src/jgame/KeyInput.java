@@ -24,7 +24,6 @@ public class KeyInput extends KeyAdapter {
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_ESCAPE) System.exit(0);
-		// System.out.println(key);
 		
 		Player player = (Player) handler.object.getFirst();
 		if (key == KeyEvent.VK_W) {

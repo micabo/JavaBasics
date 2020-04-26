@@ -44,7 +44,9 @@ public class Player extends GameObject {
 		for (GameObject gameObject : handler.object) {
 			if (gameObject.id == ID.Enemy &&
 					playerBounds.intersects(gameObject.getBounds())) {
-				health = health > 0 ? health - 1 : 0;
+				BasicEnemy tmp = (BasicEnemy) gameObject;
+				int damage = (int) tmp.getVelocity();
+				health = health - damage > 0 ? health - damage : 0;
 			}
 		}
 	}
@@ -61,7 +63,6 @@ public class Player extends GameObject {
 	}
 	
 	public void move(Direction d) {
-		// not very responsive...
 		switch (d) {
 		case UP:
 			vy = -MAXVEL;
@@ -86,5 +87,9 @@ public class Player extends GameObject {
 	
 	public int getHealth() {
 		return health;
+	}
+	
+	public boolean isDead() {
+		return health <= 0;
 	}
 }

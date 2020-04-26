@@ -13,7 +13,7 @@ public class Game extends Canvas implements Runnable {
 	static final int WIDTH = 640;
 	static final int HEIGHT = WIDTH / 12 * 9;
 	
-	static Random r = new Random();
+	static final Random R = new Random();
 	
 	private Thread thread;
 	private boolean running = false;
@@ -24,7 +24,7 @@ public class Game extends Canvas implements Runnable {
 	public Game() {
 		handler = Handler.getInstance();
 		handler.addObject(new Player(100, 100, handler));
-		handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), handler));
+		handler.addObject(new BasicEnemy(R.nextInt(WIDTH), R.nextInt(HEIGHT), handler));
 		
 		hud = new HUD(handler);
 		this.addKeyListener(new KeyInput(handler));
@@ -67,16 +67,19 @@ public class Game extends Canvas implements Runnable {
 				delta--;
 			}
 			
-			if (running) render(); // is this needed?
+			render();
 			
 			frames++;
 			
 			// print FPS every second
 			if (System.currentTimeMillis() - timer > 1_000) {
 				timer += 1_000;
-				// System.out.println("FPS: " + frames);
+				System.out.println("FPS: " + frames);
 			}
+			
+			running = ! handler.playerIsDead();
 		}
+		render();
 		stop();
 	}
 	
@@ -100,6 +103,11 @@ public class Game extends Canvas implements Runnable {
 		
 		handler.render(g);
 		hud.render(g);
+		
+		if (handler.playerIsDead()) {
+			g.setColor(Color.WHITE);
+			g.drawString("Game Over", Game.WIDTH/2, Game.HEIGHT/2);
+		}
 		
 		g.dispose();
 		bs.show();

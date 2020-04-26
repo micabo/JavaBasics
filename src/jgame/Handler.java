@@ -19,7 +19,7 @@ public class Handler {
 		instance = null;
 	}
 	
-	// behavior of THE instance
+	// behavior of THE (one, singleton) instance
 	LinkedList<GameObject> object;
 	
 	private Handler() {
@@ -44,5 +44,10 @@ public class Handler {
 	
 	public void removeObject(GameObject object) {
 		this.object.remove(object);
+	}
+	
+	public boolean playerIsDead() {
+		Player player = (Player) object.getFirst();
+		return player.isDead();
 	}
 }

@@ -7,7 +7,7 @@ import java.util.Random;
 public class HUD {
 	private int greenValue = 255;
 	
-	private Random r = new Random();
+	private static Random R = new Random();
 	
 	private long score = 0;
 	private int level = 1;
@@ -22,7 +22,7 @@ public class HUD {
 		score++;
 		if (score % 200 == 0) {
 			level++;
-			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), handler));
+			handler.addObject(new BasicEnemy(R.nextInt(Game.WIDTH), R.nextInt(Game.HEIGHT), handler));
 		}
 	}
 	

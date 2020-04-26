@@ -18,6 +18,7 @@ public class Driver {
 		
 		frame.add(game);
 		frame.pack();
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
 		game.setFocusable(true);
