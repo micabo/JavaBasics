@@ -22,7 +22,10 @@ public class HUD {
 		score++;
 		if (score % 200 == 0) {
 			level++;
-			handler.addObject(new BasicEnemy(R.nextInt(Game.WIDTH), R.nextInt(Game.HEIGHT), handler));
+			if (level % 4 == 0)
+				handler.addObject(new SmartEnemy(R.nextInt(Game.WIDTH), R.nextInt(Game.HEIGHT), handler));
+			else
+				handler.addObject(new BasicEnemy(R.nextInt(Game.WIDTH), R.nextInt(Game.HEIGHT), handler));
 		}
 	}
 	

@@ -8,12 +8,12 @@ import java.awt.Rectangle;
 public class Player extends GameObject {
 	static final int WIDTH = 32;
 	static final int HEIGHT = 32;
-	private static final int MAXVEL = 8;
+	private static final float MAXVEL = 8.0f;
 	
 	Handler handler;
 	private int health;
 	
-	public Player(int x, int y, Handler handler) {
+	public Player(float x, float y, Handler handler) {
 		super(x, y, ID.Player);
 		this.handler = handler;
 		health = 100;
@@ -21,7 +21,7 @@ public class Player extends GameObject {
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, WIDTH, HEIGHT);
+		return new Rectangle((int) x, (int) y, WIDTH, HEIGHT);
 	}
 	
 	@Override
@@ -43,9 +43,8 @@ public class Player extends GameObject {
 		Rectangle playerBounds = getBounds();
 		for (GameObject gameObject : handler.object) {
 			if (gameObject.id == ID.Enemy &&
-					playerBounds.intersects(gameObject.getBounds())) {
-				BasicEnemy tmp = (BasicEnemy) gameObject;
-				int damage = (int) tmp.getVelocity();
+				playerBounds.intersects(gameObject.getBounds())) {
+				int damage = (int) gameObject.getVelocity();
 				health = health - damage > 0 ? health - damage : 0;
 			}
 		}

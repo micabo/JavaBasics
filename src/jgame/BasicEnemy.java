@@ -8,32 +8,33 @@ import java.util.Random;
 public class BasicEnemy extends GameObject {
 	static final int WIDTH = 16;
 	static final int HEIGHT = 16;
+	static final float MAXVEL = 7.0f;
 	
 	static final Random R = new Random();
 	
 	private Handler handler;
 	private Color color;
 	
-	public BasicEnemy(int x, int y, Handler handler) {
+	public BasicEnemy(float x, float y, Handler handler) {
 		super(x, y, ID.Enemy);
 		this.handler = handler;
 		
 		do {
-			vx = R.nextInt(10) - 5;
-		} while(vx == 0);
+			vx = MAXVEL * (R.nextFloat() - 0.5f);
+		} while (Math.abs(vx) < 0.5f);
 		do {
-			vy = R.nextInt(10) - 5;
-		} while(vy == 0);
+			vy = MAXVEL * (R.nextFloat() - 0.5f);
+		} while (Math.abs(vy) < 0.5f);
 		
-		double velocity = getVelocity();
-		double maxVelocity = Math.sqrt(50);
-		double hue = velocity / maxVelocity;
+		float velocity = getVelocity();
+		float maxVelocity = (float) Math.sqrt(2 * MAXVEL * MAXVEL);
+		float hue = velocity / maxVelocity;
 		color = new Color((int) (hue * 255), (int) ((1 - hue) * 255), 0);
 	}
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, WIDTH, HEIGHT);
+		return new Rectangle((int) x, (int) y, WIDTH, HEIGHT);
 	}
 
 	@Override
@@ -43,30 +44,30 @@ public class BasicEnemy extends GameObject {
 	}
 	
 	private void updatePosition() {
-		int x_new = x + vx;
+		float x_new = x + vx;
 		
-		if (x_new <= 0) {
-			vx *= -1;
-			x = 0 - x_new;
+		if (x_new <= 0.0f) {
+			vx *= -1.0f;
+			x = -x_new;
 		}
 		else if (x_new >= Game.WIDTH - BasicEnemy.WIDTH) {
-			vx *= -1;
-			x = 2 * (Game.WIDTH - BasicEnemy.WIDTH) - x_new;
+			vx *= -1.0f;
+			x = 2.0f * (Game.WIDTH - BasicEnemy.WIDTH) - x_new;
 			
 		}
 		else {
 			x = x_new;
 		}
 		
-		int y_new = y + vy;
+		float y_new = y + vy;
 		
-		if (y_new <= 0) {
-			vy *= -1;
-			y = 0 - y_new;
+		if (y_new <= 0.0f) {
+			vy *= -1.0f;
+			y = -y_new;
 		}
 		else if (y_new >= Game.HEIGHT - BasicEnemy.HEIGHT) {
-			vy *= -1;
-			y = 2 * (Game.HEIGHT - BasicEnemy.HEIGHT) - y_new;
+			vy *= -1.0f;
+			y = 2.0f * (Game.HEIGHT - BasicEnemy.HEIGHT) - y_new;
 		}
 		else {
 			y = y_new;
@@ -76,10 +77,7 @@ public class BasicEnemy extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		g.setColor(color);
-		g.fillRect(x, y, BasicEnemy.WIDTH, BasicEnemy.HEIGHT);
+		g.fillRect((int) x, (int) y, BasicEnemy.WIDTH, BasicEnemy.HEIGHT);
 	}
 	
-	public double getVelocity() {
-		return Math.sqrt((double) vx * vx + vy * vy);
-	}
 }
