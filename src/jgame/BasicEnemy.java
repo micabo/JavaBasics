@@ -5,9 +5,11 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+
 public class BasicEnemy extends GameObject {
 	static final int WIDTH = 16;
 	static final int HEIGHT = 16;
+	static final float MINVEL = 2.0f;
 	static final float MAXVEL = 7.0f;
 	
 	static final Random R = new Random();
@@ -19,12 +21,8 @@ public class BasicEnemy extends GameObject {
 		super(x, y, ID.Enemy);
 		this.handler = handler;
 		
-		do {
-			vx = MAXVEL * (R.nextFloat() - 0.5f);
-		} while (Math.abs(vx) < 0.5f);
-		do {
-			vy = MAXVEL * (R.nextFloat() - 0.5f);
-		} while (Math.abs(vy) < 0.5f);
+		vx = (MINVEL + R.nextFloat() * (MAXVEL - MINVEL)) * (R.nextBoolean() ? 1: -1);
+		vy = (MINVEL + R.nextFloat() * (MAXVEL - MINVEL)) * (R.nextBoolean() ? 1: -1);
 		
 		float velocity = getVelocity();
 		float maxVelocity = (float) Math.sqrt(2 * MAXVEL * MAXVEL);
@@ -39,8 +37,12 @@ public class BasicEnemy extends GameObject {
 
 	@Override
 	public void tick() {
-		handler.addObject(new Trail(x, y, color, handler));
+		addTrailToHandler();
 		updatePosition();
+	}
+	
+	private void addTrailToHandler() {
+		handler.addTrail(x, y, color);
 	}
 	
 	private void updatePosition() {

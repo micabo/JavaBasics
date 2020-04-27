@@ -2,6 +2,7 @@ package jgame;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import static java.lang.Math.sqrt;
 
 enum ID {
 	Player(),
@@ -29,6 +30,7 @@ public abstract class GameObject {
 	public abstract Rectangle getBounds();
 	
 	public float getVelocity() {
-		return (float) Math.sqrt(vx * vx + vy * vy);
+		return (float) sqrt(vx * vx + vy * vy);
 	}
+	
 }

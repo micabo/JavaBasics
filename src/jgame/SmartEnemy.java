@@ -8,6 +8,7 @@ import java.util.Random;
 public class SmartEnemy extends GameObject {
 	static final int WIDTH = 16;
 	static final int HEIGHT = 16;
+	static final float MINVEL = 2.0f;
 	static final float MAXVEL = 5.0f;
 	
 	static final Random R = new Random();
@@ -19,12 +20,8 @@ public class SmartEnemy extends GameObject {
 		super(x, y, ID.Enemy);
 		this.handler = handler;
 		
-		do {
-			vx = MAXVEL * (R.nextFloat() - 0.5f);
-		} while (Math.abs(vx) < 0.5f);
-		do {
-			vy = MAXVEL * (R.nextFloat() - 0.5f);
-		} while (Math.abs(vy) < 0.5f);
+		vx = (MINVEL + R.nextFloat() * (MAXVEL - MINVEL)) * (R.nextBoolean() ? 1: -1);
+		vy = (MINVEL + R.nextFloat() * (MAXVEL - MINVEL)) * (R.nextBoolean() ? 1: -1);
 		
 		float velocity = getVelocity();
 		float maxVelocity = (float) Math.sqrt(2 * MAXVEL * MAXVEL);
@@ -39,25 +36,25 @@ public class SmartEnemy extends GameObject {
 
 	@Override
 	public void tick() {
-		addTrail();
+		addTrailToHandler();
 		aimAtPlayer();
 		updatePosition();
 	}
 	
-	private void addTrail() {
-		handler.addObject(new Trail(x, y, color, handler));
+	private void addTrailToHandler() {
+		handler.addTrail(x, y, color);
 	}
 	
 	private void aimAtPlayer() {
-		Player player = (Player) handler.object.getFirst();
+		Player player = handler.getPlayer();
 		
 		float delta_x = player.x - x;
 		float delta_y = player.y - y;
 		float distance = (float) Math.sqrt(delta_x * delta_x + delta_y * delta_y);
 
 		float v_tot = getVelocity();
-		vx = delta_x * v_tot / distance;
-		vy = delta_y * v_tot / distance;
+		vx =  v_tot * delta_x / distance;
+		vy =  v_tot * delta_y / distance;
 	}
 	
 	private void updatePosition() {

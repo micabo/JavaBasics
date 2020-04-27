@@ -2,13 +2,9 @@ package jgame;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Random;
+
 
 public class HUD {
-	private int greenValue = 255;
-	
-	private static Random R = new Random();
-	
 	private long score = 0;
 	private int level = 1;
 	
@@ -22,20 +18,17 @@ public class HUD {
 		score++;
 		if (score % 200 == 0) {
 			level++;
-			if (level % 4 == 0)
-				handler.addObject(new SmartEnemy(R.nextInt(Game.WIDTH), R.nextInt(Game.HEIGHT), handler));
-			else
-				handler.addObject(new BasicEnemy(R.nextInt(Game.WIDTH), R.nextInt(Game.HEIGHT), handler));
+			if (level % 4 == 0) handler.spawnEnemy(GameObjectType.SMARTENEMY);
+			else handler.spawnEnemy(GameObjectType.BASICENEMY);
 		}
 	}
 	
 	public void render(Graphics g) {
-		Player player = (Player) handler.object.getFirst();
-		int health = player.getHealth();
+		int health = handler.getPlayer().getHealth();
 		
 		g.setColor(Color.gray);
 		g.fillRect(15, 15, 200, 32);
-		g.setColor(new Color(255 * (1 - health / 100), greenValue * health / 100, 0));
+		g.setColor(new Color(255 * (1 - health / 100), 255 * health / 100, 0));
 		g.fillRect(15, 15, health * 2, 32);
 		g.setColor(Color.white);
 		g.drawRect(15, 15, 200, 32);

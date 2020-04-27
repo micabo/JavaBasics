@@ -8,7 +8,7 @@ import java.awt.Rectangle;
 public class Player extends GameObject {
 	static final int WIDTH = 32;
 	static final int HEIGHT = 32;
-	private static final float MAXVEL = 8.0f;
+	static final float MAXVEL = 8.0f;
 	
 	Handler handler;
 	private int health;
@@ -33,21 +33,8 @@ public class Player extends GameObject {
 		y = Game.clamp(y, 0, Game.HEIGHT - Player.HEIGHT);
 		
 		// reset velocity when hitting a wall
-		if (x == 0 || x == Game.WIDTH - Player.WIDTH) vx = 0;
-		if (y == 0 || y == Game.HEIGHT - Player.HEIGHT) vy = 0;
-		
-		collision();
-	}
-	
-	private void collision() {
-		Rectangle playerBounds = getBounds();
-		for (GameObject gameObject : handler.object) {
-			if (gameObject.id == ID.Enemy &&
-				playerBounds.intersects(gameObject.getBounds())) {
-				int damage = (int) gameObject.getVelocity();
-				health = health - damage > 0 ? health - damage : 0;
-			}
-		}
+		if (x <= 0 || x >= Game.WIDTH - Player.WIDTH) vx = 0;
+		if (y <= 0 || y >= Game.HEIGHT - Player.HEIGHT) vy = 0;
 	}
 	
 	@Override
@@ -82,6 +69,10 @@ public class Player extends GameObject {
 			vx = 0;
 			break;
 		}
+	}
+	
+	public void inflictDamage(int damage) {
+		health = health - damage > 0 ? health - damage : 0;
 	}
 	
 	public int getHealth() {
