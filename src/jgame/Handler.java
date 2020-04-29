@@ -15,9 +15,7 @@ public class Handler {
 	private static Random R = new Random();
 	
 	public static Handler getInstance() {
-		if (instance == null) {
-			instance = new Handler();
-		}
+		if (instance == null) instance = new Handler();
 		return instance;
 	}
 	
@@ -31,6 +29,11 @@ public class Handler {
 	
 	private Handler() {
 		object = new LinkedList<>();
+	}
+	
+	public void clear() {
+		object.clear();
+		player = null;
 	}
 	
 	public void tick() {
@@ -68,7 +71,7 @@ public class Handler {
 	
 	public void spawnPlayer() {
 		if (player == null)
-			player = (Player) createGameObject(GameObjectType.PLAYER, this, 100.0f, 100.0f);
+			player = (Player) createGameObject(GameObjectType.PLAYER, 100.0f, 100.0f);
 	}
 	
 	public Player getPlayer() {
@@ -82,10 +85,11 @@ public class Handler {
 	public void spawnEnemy(GameObjectType type) {
 		int x = R.nextInt(Game.WIDTH);
 		int y = R.nextInt(Game.HEIGHT);
-		addObject(createGameObject(type, this, x, y));
+		addObject(createGameObject(type, x, y));
 	}
 	
 	public void addTrail(float x, float y, Color color) {
-		addObject(createGameObject(GameObjectType.TRAIL, this, x, y, color));
+		addObject(createGameObject(GameObjectType.TRAIL, x, y, color));
 	}
+	
 }

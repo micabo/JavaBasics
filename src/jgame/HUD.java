@@ -14,6 +14,11 @@ public class HUD {
 		this.handler = handler;
 	}
 	
+	public void reset() {
+		score = 0;
+		level = 1;
+	}
+	
 	public void tick() {		
 		score++;
 		if (score % 200 == 0) {

@@ -1,7 +1,6 @@
 package jgame;
 
 import java.awt.Color;
-import java.util.Random;
 
 enum GameObjectType {
 	PLAYER,
@@ -11,8 +10,10 @@ enum GameObjectType {
 }
 
 public class GameObjectFactory {
+	
+	private static Handler handler = Handler.getInstance();
 
-	public static GameObject createGameObject(GameObjectType type, Handler handler, float x, float y) {
+	public static GameObject createGameObject(GameObjectType type, float x, float y) {
 		GameObject g;
 		switch (type) {
 		case PLAYER:
@@ -25,7 +26,7 @@ public class GameObjectFactory {
 			g = new SmartEnemy(x, y, handler);
 			break;
 		case TRAIL:
-			g = new Trail(x, y, Color.WHITE, handler);
+			g = createGameObject(type, x, y, Color.WHITE);
 			break;
 		default:
 			g = null;
@@ -33,17 +34,13 @@ public class GameObjectFactory {
 		return g;
 	}
 	
-	public static GameObject createGameObject(GameObjectType type, Handler handler, float x, float y, Color color) {
+	public static GameObject createGameObject(GameObjectType type, float x, float y, Color color) {
 		GameObject g;
 		switch (type) {
 		case PLAYER:
-			g = new Player(x, y, handler);
-			break;
 		case BASICENEMY:
-			g = new BasicEnemy(x, y, handler);
-			break;
 		case SMARTENEMY:
-			g = new SmartEnemy(x, y, handler);
+			g = createGameObject(type, x, y);
 			break;
 		case TRAIL:
 			g = new Trail(x, y, color, handler);

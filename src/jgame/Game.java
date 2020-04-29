@@ -25,7 +25,7 @@ public class Game extends Canvas implements Runnable {
 		handler.spawnEnemy(GameObjectType.BASICENEMY);
 		
 		hud = new HUD(handler);
-		this.addKeyListener(new KeyInput(handler.getPlayer()));
+		this.addKeyListener(new KeyInput(handler));
 	}
 	
 	public synchronized void start() {

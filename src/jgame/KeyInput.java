@@ -17,14 +17,17 @@ public class KeyInput extends KeyAdapter {
 	private Player player;
 	private boolean[] keyDown = {false, false, false, false};
 	
-	public KeyInput(Player player) {
-		this.player = player;
+	public KeyInput(Handler handler) {
+		this.player = handler.getPlayer();
 	}
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
+		
+		// escape exits the game
 		if (key == KeyEvent.VK_ESCAPE) System.exit(0);
 		
+		// keyEvents to steer the player
 		if (key == KeyEvent.VK_W) {
 			player.move(Direction.UP);
 			keyDown[0] = true;

@@ -14,11 +14,13 @@ public class SmartEnemy extends GameObject {
 	static final Random R = new Random();
 	
 	private Handler handler;
+	private Player player;
 	private Color color;
 	
 	public SmartEnemy(float x, float y, Handler handler) {
 		super(x, y, ID.Enemy);
 		this.handler = handler;
+		this.player = handler.getPlayer();
 		
 		vx = (MINVEL + R.nextFloat() * (MAXVEL - MINVEL)) * (R.nextBoolean() ? 1: -1);
 		vy = (MINVEL + R.nextFloat() * (MAXVEL - MINVEL)) * (R.nextBoolean() ? 1: -1);
@@ -46,8 +48,6 @@ public class SmartEnemy extends GameObject {
 	}
 	
 	private void aimAtPlayer() {
-		Player player = handler.getPlayer();
-		
 		float delta_x = player.x - x;
 		float delta_y = player.y - y;
 		float distance = (float) Math.sqrt(delta_x * delta_x + delta_y * delta_y);
