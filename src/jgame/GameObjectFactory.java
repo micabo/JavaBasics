@@ -4,8 +4,8 @@ import java.awt.Color;
 
 enum GameObjectType {
 	PLAYER,
-	BASICENEMY,
-	SMARTENEMY,
+	BASIC_ENEMY,
+	SMART_ENEMY,
 	TRAIL;
 }
 
@@ -19,10 +19,10 @@ public class GameObjectFactory {
 		case PLAYER:
 			g = new Player(x, y, handler);
 			break;
-		case BASICENEMY:
+		case BASIC_ENEMY:
 			g = new BasicEnemy(x, y, handler);
 			break;
-		case SMARTENEMY:
+		case SMART_ENEMY:
 			g = new SmartEnemy(x, y, handler);
 			break;
 		case TRAIL:
@@ -38,8 +38,8 @@ public class GameObjectFactory {
 		GameObject g;
 		switch (type) {
 		case PLAYER:
-		case BASICENEMY:
-		case SMARTENEMY:
+		case BASIC_ENEMY:
+		case SMART_ENEMY:
 			g = createGameObject(type, x, y);
 			break;
 		case TRAIL:

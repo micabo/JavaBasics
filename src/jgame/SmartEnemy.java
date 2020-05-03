@@ -3,15 +3,12 @@ package jgame;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.Random;
 
 public class SmartEnemy extends GameObject {
 	static final int WIDTH = 16;
 	static final int HEIGHT = 16;
-	static final float MINVEL = 2.0f;
-	static final float MAXVEL = 5.0f;
-	
-	static final Random R = new Random();
+	static final float MINVEL = 1.0f;
+	static final float MAXVEL = 2.0f;
 	
 	private Handler handler;
 	private Player player;
@@ -22,12 +19,13 @@ public class SmartEnemy extends GameObject {
 		this.handler = handler;
 		this.player = handler.getPlayer();
 		
-		vx = (MINVEL + R.nextFloat() * (MAXVEL - MINVEL)) * (R.nextBoolean() ? 1: -1);
-		vy = (MINVEL + R.nextFloat() * (MAXVEL - MINVEL)) * (R.nextBoolean() ? 1: -1);
+		vx = GameObject.randomSignedFloatBetween(MINVEL, MAXVEL);
+		vy = GameObject.randomSignedFloatBetween(MINVEL, MAXVEL);
 		
 		float velocity = getVelocity();
 		float maxVelocity = (float) Math.sqrt(2 * MAXVEL * MAXVEL);
-		float hue = velocity / maxVelocity;
+		float minVelocity = (float) Math.sqrt(2 * MINVEL * MINVEL);
+		float hue = (velocity - minVelocity) / (maxVelocity - minVelocity);
 		color = new Color((int) (hue * 255), 0, (int) ((1 - hue) * 255));
 	}
 	
@@ -64,9 +62,9 @@ public class SmartEnemy extends GameObject {
 			vx *= -1.0f;
 			x = -x_new;
 		}
-		else if (x_new >= Game.WIDTH - BasicEnemy.WIDTH) {
+		else if (x_new >= Game.WIDTH - WIDTH) {
 			vx *= -1.0f;
-			x = 2.0f * (Game.WIDTH - BasicEnemy.WIDTH) - x_new;
+			x = 2.0f * (Game.WIDTH - WIDTH) - x_new;
 			
 		}
 		else {
@@ -79,9 +77,9 @@ public class SmartEnemy extends GameObject {
 			vy *= -1.0f;
 			y = -y_new;
 		}
-		else if (y_new >= Game.HEIGHT - BasicEnemy.HEIGHT) {
+		else if (y_new >= Game.HEIGHT - HEIGHT) {
 			vy *= -1.0f;
-			y = 2.0f * (Game.HEIGHT - BasicEnemy.HEIGHT) - y_new;
+			y = 2.0f * (Game.HEIGHT - HEIGHT) - y_new;
 		}
 		else {
 			y = y_new;
@@ -91,7 +89,8 @@ public class SmartEnemy extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		g.setColor(color);
-		g.fillRect((int) x, (int) y, BasicEnemy.WIDTH, BasicEnemy.HEIGHT);
+		g.fillRect((int) x, (int) y, WIDTH, HEIGHT);
 	}
+	
 }
 

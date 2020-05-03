@@ -23,8 +23,8 @@ public class HUD {
 		score++;
 		if (score % 200 == 0) {
 			level++;
-			if (level % 4 == 0) handler.spawnEnemy(GameObjectType.SMARTENEMY);
-			else handler.spawnEnemy(GameObjectType.BASICENEMY);
+			if (level % 4 == 0) handler.spawnEnemy(GameObjectType.SMART_ENEMY);
+			else handler.spawnEnemy(GameObjectType.BASIC_ENEMY);
 		}
 	}
 	

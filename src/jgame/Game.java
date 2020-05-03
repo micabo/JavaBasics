@@ -22,7 +22,7 @@ public class Game extends Canvas implements Runnable {
 		handler = Handler.getInstance();
 		
 		handler.spawnPlayer();
-		handler.spawnEnemy(GameObjectType.BASICENEMY);
+		handler.spawnEnemy(GameObjectType.BASIC_ENEMY);
 		
 		hud = new HUD(handler);
 		this.addKeyListener(new KeyInput(handler));
