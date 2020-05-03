@@ -8,12 +8,12 @@ import java.awt.Rectangle;
 public class Player extends GameObject {
 	static final int WIDTH = 32;
 	static final int HEIGHT = 32;
-	private static final int MAXVEL = 8;
+	static final float MAXVEL = 8.0f;
 	
 	Handler handler;
 	private int health;
 	
-	public Player(int x, int y, Handler handler) {
+	public Player(float x, float y, Handler handler) {
 		super(x, y, ID.Player);
 		this.handler = handler;
 		health = 100;
@@ -21,7 +21,7 @@ public class Player extends GameObject {
 	
 	@Override
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, WIDTH, HEIGHT);
+		return new Rectangle((int) x, (int) y, WIDTH, HEIGHT);
 	}
 	
 	@Override
@@ -33,22 +33,8 @@ public class Player extends GameObject {
 		y = Game.clamp(y, 0, Game.HEIGHT - Player.HEIGHT);
 		
 		// reset velocity when hitting a wall
-		if (x == 0 || x == Game.WIDTH - Player.WIDTH) vx = 0;
-		if (y == 0 || y == Game.HEIGHT - Player.HEIGHT) vy = 0;
-		
-		collision();
-	}
-	
-	private void collision() {
-		Rectangle playerBounds = getBounds();
-		for (GameObject gameObject : handler.object) {
-			if (gameObject.id == ID.Enemy &&
-					playerBounds.intersects(gameObject.getBounds())) {
-				BasicEnemy tmp = (BasicEnemy) gameObject;
-				int damage = (int) tmp.getVelocity();
-				health = health - damage > 0 ? health - damage : 0;
-			}
-		}
+		if (x <= 0 || x >= Game.WIDTH - Player.WIDTH) vx = 0;
+		if (y <= 0 || y >= Game.HEIGHT - Player.HEIGHT) vy = 0;
 	}
 	
 	@Override
@@ -83,6 +69,10 @@ public class Player extends GameObject {
 			vx = 0;
 			break;
 		}
+	}
+	
+	public void inflictDamage(int damage) {
+		health = health - damage > 0 ? health - damage : 0;
 	}
 	
 	public int getHealth() {

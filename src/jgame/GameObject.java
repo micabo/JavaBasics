@@ -1,7 +1,10 @@
 package jgame;
 
+import static java.lang.Math.sqrt;
+
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.Random;
 
 enum ID {
 	Player(),
@@ -14,11 +17,17 @@ enum ID {
  * A GameObject is rather a struct than an object -> no access control
  */
 public abstract class GameObject {
-	protected int x, y;
-	protected int vx, vy;
+	public static Random R = new Random();
+	
+	public static float randomSignedFloatBetween(float min, float max) {
+		return (min + R.nextFloat() * (max - min)) * (R.nextBoolean() ? 1: -1);
+	}
+	
+	protected float x, y;
+	protected float vx, vy;
 	protected ID id;
 	
-	public GameObject(int x, int y, ID id) {
+	public GameObject(float x, float y, ID id) {
 		this.x = x;
 		this.y = y;
 		this.id = id;
@@ -27,4 +36,9 @@ public abstract class GameObject {
 	public abstract void tick();
 	public abstract void render(Graphics g);
 	public abstract Rectangle getBounds();
+	
+	public float getVelocity() {
+		return (float) sqrt(vx * vx + vy * vy);
+	}
+	
 }

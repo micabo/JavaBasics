@@ -4,28 +4,30 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 enum Direction {
-	UP(),
-	DOWN(),
-	LEFT(),
-	RIGHT(),
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT,
 	HORIZONTAL_ZERO,
 	VERTICAL_ZERO;
 }
 
 public class KeyInput extends KeyAdapter {
 	
-	private Handler handler;
+	private Player player;
 	private boolean[] keyDown = {false, false, false, false};
 	
 	public KeyInput(Handler handler) {
-		this.handler = handler;
+		this.player = handler.getPlayer();
 	}
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
+		
+		// escape exits the game
 		if (key == KeyEvent.VK_ESCAPE) System.exit(0);
 		
-		Player player = (Player) handler.object.getFirst();
+		// keyEvents to steer the player
 		if (key == KeyEvent.VK_W) {
 			player.move(Direction.UP);
 			keyDown[0] = true;
@@ -51,7 +53,6 @@ public class KeyInput extends KeyAdapter {
 		if (key == KeyEvent.VK_A) keyDown[2] = false;
 		if (key == KeyEvent.VK_D) keyDown[3] = false;
 		
-		Player player = (Player) handler.object.getFirst();
 		if (!keyDown[0] && !keyDown[1]) player.move(Direction.VERTICAL_ZERO);
 		if (!keyDown[2] && !keyDown[3]) player.move(Direction.HORIZONTAL_ZERO);
 	}
