@@ -49,9 +49,9 @@ public class BasicEnemy extends GameObject {
 			vx *= -1.0f;
 			x = -x_new;
 		}
-		else if (x_new >= Game.WIDTH - BasicEnemy.WIDTH) {
+		else if (x_new >= Game.WIDTH - WIDTH) {
 			vx *= -1.0f;
-			x = 2.0f * (Game.WIDTH - BasicEnemy.WIDTH) - x_new;
+			x = 2.0f * (Game.WIDTH - WIDTH) - x_new;
 			
 		}
 		else {
@@ -64,9 +64,9 @@ public class BasicEnemy extends GameObject {
 			vy *= -1.0f;
 			y = -y_new;
 		}
-		else if (y_new >= Game.HEIGHT - BasicEnemy.HEIGHT) {
+		else if (y_new >= Game.HEIGHT - HEIGHT) {
 			vy *= -1.0f;
-			y = 2.0f * (Game.HEIGHT - BasicEnemy.HEIGHT) - y_new;
+			y = 2.0f * (Game.HEIGHT - HEIGHT) - y_new;
 		}
 		else {
 			y = y_new;
@@ -76,7 +76,7 @@ public class BasicEnemy extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		g.setColor(color);
-		g.fillRect((int) x, (int) y, BasicEnemy.WIDTH, BasicEnemy.HEIGHT);
+		g.fillRect((int) x, (int) y, WIDTH, HEIGHT);
 	}
 	
 }

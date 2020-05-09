@@ -17,15 +17,25 @@ public class Game extends Canvas implements Runnable {
 	
 	private Handler handler;
 	private HUD hud;
+	private Menu menu;
+	
+	public enum GameState {
+		INITIAL,
+		STARTED,
+		ENDED;
+	}
+	
+	public GameState gameState = GameState.INITIAL;
 	
 	public Game() {
 		handler = Handler.getInstance();
-		
 		handler.spawnPlayer();
 		handler.spawnEnemy(GameObjectType.BASIC_ENEMY);
 		
 		hud = new HUD(handler);
-		this.addKeyListener(new KeyInput(handler));
+		menu = new Menu(this);
+		this.addMouseListener(menu);
+		this.addKeyListener(new KeyInput(handler, menu));
 	}
 	
 	public synchronized void start() {
@@ -70,21 +80,28 @@ public class Game extends Canvas implements Runnable {
 			frames++;
 			
 			// print FPS every second
+			/*
 			if (System.currentTimeMillis() - timer > 1_000) {
 				timer += 1_000;
 				System.out.println("FPS: " + frames);
 			}
+			*/
 			
-			running = ! handler.playerIsDead();
+			if (gameState == GameState.STARTED && handler.playerIsDead())
+				gameState = GameState.ENDED;
+				
 		}
 		render();
 		stop();
 	}
 	
 	private void tick() {
-		handler.tick();
-		handler.detectCollision();
-		hud.tick();
+		if (gameState == GameState.STARTED) {
+			handler.tick();
+			handler.detectCollision();
+			hud.tick();
+		}
+
 	}
 	
 	private void render() {
@@ -100,16 +117,28 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		handler.render(g);
-		hud.render(g);
-		
-		if (handler.playerIsDead()) {
-			g.setColor(Color.WHITE);
-			g.drawString("Game Over", Game.WIDTH/2, Game.HEIGHT/2);
-		}
+		renderScene(g);
 		
 		g.dispose();
 		bs.show();
+	}
+	
+	private void renderScene(Graphics g) {
+		if (gameState == GameState.INITIAL) {
+			menu.render(g);
+		}
+		else if (gameState == GameState.STARTED) {
+			handler.render(g);
+			hud.render(g);
+		}
+		else { // gameState == GameState.ENDED
+			handler.render(g);
+			hud.render(g);
+			g.setColor(new Color(0f, 0f, 0f, 0.6f));
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+			menu.render(g);
+		}
+
 	}
 	
 	public static int clamp(int value, int min, int max) {

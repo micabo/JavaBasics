@@ -29,12 +29,12 @@ public class Player extends GameObject {
 		x += vx;
 		y += vy;
 		
-		x = Game.clamp(x, 0, Game.WIDTH - Player.WIDTH);
-		y = Game.clamp(y, 0, Game.HEIGHT - Player.HEIGHT);
+		x = Game.clamp(x, 0, Game.WIDTH - WIDTH);
+		y = Game.clamp(y, 0, Game.HEIGHT - HEIGHT);
 		
 		// reset velocity when hitting a wall
-		if (x <= 0 || x >= Game.WIDTH - Player.WIDTH) vx = 0;
-		if (y <= 0 || y >= Game.HEIGHT - Player.HEIGHT) vy = 0;
+		if (x <= 0 || x >= Game.WIDTH - WIDTH) vx = 0;
+		if (y <= 0 || y >= Game.HEIGHT - HEIGHT) vy = 0;
 	}
 	
 	@Override

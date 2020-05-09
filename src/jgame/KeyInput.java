@@ -17,8 +17,11 @@ public class KeyInput extends KeyAdapter {
 	private Player player;
 	private boolean[] keyDown = {false, false, false, false};
 	
-	public KeyInput(Handler handler) {
+	private Menu menu;
+	
+	public KeyInput(Handler handler, Menu menu) {
 		this.player = handler.getPlayer();
+		this.menu = menu;
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -26,6 +29,10 @@ public class KeyInput extends KeyAdapter {
 		
 		// escape exits the game
 		if (key == KeyEvent.VK_ESCAPE) System.exit(0);
+		
+		if (key == KeyEvent.VK_ENTER) menu.enterActive();
+		
+		if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) menu.selectionToggle();
 		
 		// keyEvents to steer the player
 		if (key == KeyEvent.VK_W) {

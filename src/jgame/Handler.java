@@ -14,12 +14,12 @@ public class Handler {
 	private static Handler instance = null;
 	private static Random R = new Random();
 	
-	public static Handler getInstance() {
+	public static synchronized Handler getInstance() {
 		if (instance == null) instance = new Handler();
 		return instance;
 	}
 	
-	public static void freeInstance() {
+	public static synchronized void freeInstance() {
 		instance = null;
 	}
 	
