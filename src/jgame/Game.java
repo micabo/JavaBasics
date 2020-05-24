@@ -18,14 +18,20 @@ public class Game extends Canvas implements Runnable {
 	private Handler handler;
 	private HUD hud;
 	private Menu menu;
+	private KeyInput keyInput;
 	
-	public enum GameState {
+	private SoundPlayer sound;
+	
+	static SpriteSheet sprites = SpriteSheet.createFromFile("res/sprite_sheet.bmp");
+	
+	enum GameState {
 		INITIAL,
-		STARTED,
+		RUNNING,
+		PAUSED,
 		ENDED;
 	}
 	
-	public GameState gameState = GameState.INITIAL;
+	private GameState gameState;
 	
 	public Game() {
 		handler = Handler.getInstance();
@@ -35,7 +41,11 @@ public class Game extends Canvas implements Runnable {
 		hud = new HUD(handler);
 		menu = new Menu(this);
 		this.addMouseListener(menu);
-		this.addKeyListener(new KeyInput(handler, menu));
+		
+		keyInput = new KeyInput(handler, menu, this);
+		this.addKeyListener(keyInput);
+		
+		gameState = GameState.INITIAL;
 	}
 	
 	public synchronized void start() {
@@ -87,7 +97,7 @@ public class Game extends Canvas implements Runnable {
 			}
 			*/
 			
-			if (gameState == GameState.STARTED && handler.playerIsDead())
+			if (gameState == GameState.RUNNING && handler.playerIsDead())
 				gameState = GameState.ENDED;
 				
 		}
@@ -96,7 +106,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	private void tick() {
-		if (gameState == GameState.STARTED) {
+		if (gameState == GameState.RUNNING) {
 			handler.tick();
 			handler.detectCollision();
 			hud.tick();
@@ -124,21 +134,56 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	private void renderScene(Graphics g) {
-		if (gameState == GameState.INITIAL) {
+		switch (gameState) {
+		case INITIAL:
 			menu.render(g);
-		}
-		else if (gameState == GameState.STARTED) {
+			break;
+		case RUNNING:
 			handler.render(g);
 			hud.render(g);
-		}
-		else { // gameState == GameState.ENDED
+			break;
+		case PAUSED:
+			handler.render(g);
+			hud.render(g);
+			g.drawString("Paused", 300, HEIGHT/2);
+			break;
+		case ENDED:
 			handler.render(g);
 			hud.render(g);
 			g.setColor(new Color(0f, 0f, 0f, 0.6f));
 			g.fillRect(0, 0, WIDTH, HEIGHT);
 			menu.render(g);
+			break;
 		}
-
+	}
+	
+	public void startGame() {
+		switch (gameState) {
+		case INITIAL:
+			gameState = GameState.RUNNING;
+			break;
+		case ENDED:
+			handler.clear();
+			handler.spawnPlayer();
+			handler.spawnEnemy(GameObjectType.BASIC_ENEMY);
+			hud.reset();
+			keyInput.rebindPlayer();
+			gameState = GameState.RUNNING;
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public void pauseGame() {
+		if (gameState == GameState.RUNNING)
+			gameState = GameState.PAUSED;
+		else if (gameState == GameState.PAUSED)
+			gameState = GameState.RUNNING;
+	}
+	
+	public boolean isRunningOrPaused() {
+		return gameState == GameState.RUNNING || gameState == GameState.PAUSED;
 	}
 	
 	public static int clamp(int value, int min, int max) {

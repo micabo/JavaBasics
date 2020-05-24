@@ -86,10 +86,10 @@ public class Handler {
 		int x = R.nextInt(Game.WIDTH);
 		int y = R.nextInt(Game.HEIGHT);
 		addObject(createGameObject(type, x, y));
+		SoundPlayer.playSound();
 	}
 	
 	public void addTrail(float x, float y, Color color) {
 		addObject(createGameObject(GameObjectType.TRAIL, x, y, color));
 	}
-	
 }

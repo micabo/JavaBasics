@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 
 public class Player extends GameObject {
 	static final int WIDTH = 32;
@@ -12,11 +13,13 @@ public class Player extends GameObject {
 	
 	Handler handler;
 	private int health;
+	private BufferedImage image;
 	
 	public Player(float x, float y, Handler handler) {
 		super(x, y, ID.Player);
 		this.handler = handler;
 		health = 100;
+		image = Game.sprites.grabImage(1, 1, WIDTH, HEIGHT);
 	}
 	
 	@Override
@@ -39,13 +42,10 @@ public class Player extends GameObject {
 	
 	@Override
 	public void render(Graphics g) {
-		// this is for the collision boundary
+		g.drawImage(image, (int) x, (int) y, null);
 		Graphics2D g2d = (Graphics2D) g;
 		g.setColor(Color.green);
 		g2d.draw(getBounds());
-		
-		//g.setColor(Color.white);		
-		//g.fillRect(x, y, Player.WIDTH, Player.HEIGHT);
 	}
 	
 	public void move(Direction d) {

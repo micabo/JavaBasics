@@ -7,8 +7,6 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import jgame.Game.GameState;
-
 public class Menu extends MouseAdapter {
 	
 	private Game game;
@@ -25,25 +23,25 @@ public class Menu extends MouseAdapter {
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		if (game.gameState == GameState.STARTED)
+		if (game.isRunningOrPaused())
 			return;
 		if (playBtn.clicked(e))
-			game.gameState = GameState.STARTED;
+			game.startGame();
 		if (quitBtn.clicked(e))
 			System.exit(0);
 	}
 	
 	public void enterActive() {
-		if (game.gameState == GameState.STARTED)
+		if (game.isRunningOrPaused())
 			return;
 		if (playBtn.isActive())
-			game.gameState = GameState.STARTED;
+			game.startGame();
 		if (quitBtn.isActive())
 			System.exit(0);
 	}
 	
 	public void selectionToggle() {
-		if (game.gameState == GameState.STARTED)
+		if (game.isRunningOrPaused())
 			return;
 		playBtn.setActive(!playBtn.isActive());
 		quitBtn.setActive(!quitBtn.isActive());

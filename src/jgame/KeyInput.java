@@ -14,14 +14,22 @@ enum Direction {
 
 public class KeyInput extends KeyAdapter {
 	
-	private Player player;
 	private boolean[] keyDown = {false, false, false, false};
 	
+	private Handler handler;
+	private Player player;
 	private Menu menu;
+	private Game game;
 	
-	public KeyInput(Handler handler, Menu menu) {
+	public KeyInput(Handler handler, Menu menu, Game game) {
+		this.handler = handler;
 		this.player = handler.getPlayer();
 		this.menu = menu;
+		this.game = game;
+	}
+	
+	public void rebindPlayer() {
+		this.player = handler.getPlayer();
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -29,6 +37,8 @@ public class KeyInput extends KeyAdapter {
 		
 		// escape exits the game
 		if (key == KeyEvent.VK_ESCAPE) System.exit(0);
+		
+		if (key == KeyEvent.VK_SPACE) game.pauseGame();
 		
 		if (key == KeyEvent.VK_ENTER) menu.enterActive();
 		
